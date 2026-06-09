@@ -7,6 +7,8 @@ const SERVICE_BOXES = document.querySelectorAll('.service-card__box')
 const ACTIVE_LINK_CLASS = 'active'
 const BREAKPOINT = 576
 
+const lerp = (start, end, alpha) => start + (end - start) * alpha
+
 let currentActiveLink = document.querySelector('.nav__list-link.active')
 
 // Remove the active state once the breakpoint is reached
@@ -92,12 +94,14 @@ NAV_LINKS.forEach(link => {
   })
 })
 
-const lerp = (start, end, alpha) => start + (end - start) * alpha
-
 SERVICE_BOXES.forEach(service => {
+  console.log(service.nodeName)
   const BG = service.querySelector('.service-card__bg')
-  if (!BG) console.log('nuh uh'); return
-  
+  if (!BG) {
+    console.log('nuh uh')
+    return
+  }
+
   let currentX = 0, currentY = 0
   let targetX = 0, targetY = 0
 
