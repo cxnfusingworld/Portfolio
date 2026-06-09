@@ -100,44 +100,42 @@ let isHovering = false
 const lerp = (start, end, alpha) => start + (end - start) * alpha
 
 SERVICE_BOXES.forEach(service => {
-
-  const halfWidth = bgRect.width / 2
-  const halfHeight = bgRect.height / 2
   const BG = service.querySelector('.service-card__bg')
+  if (!BG) return
   
-  const updateLoop = () => {
-    if (BG) {
-      currentX = lerp(currentX, targetX, 0.1)
-      currentY = lerp(currentY, targetY, 0.1)
+  let currentX = 0, currentY = 0
+  let targetX = 0, targetY = 0
 
-      BG.style.left = `${currentX}px`
-      BG.style.top = `${currentY}px`
-    }
+  const updateLoop = () => {
+    currentX = lerp(currentX, targetX, 0.1)
+    currentY = lerp(currentY, targetY, 0.1)
+
+    BG.style.left = `${currentX}px`
+    BG.style.top = `${currentY}px`
+    
     requestAnimationFrame(updateLoop)
   }
   updateLoop()
 
   service.addEventListener('mouseenter', (e) => {
     const rect = service.getBoundingClientRect()
-    const LEFT = e.clientX - rect.left
-    const TOP = e.clientY - rect.top
-    currentX = (e.clientX - rect.left)// - halfWidth
-    currentY = (e.clientY - rect.top)// - halfHeight
+    currentX = e.clientX - rect.left
+    currentY = e.clientY - rect.top
+    targetX = currentX
+    targetY = currentY
   })
 
   service.addEventListener('mousemove', (e) => {
     const rect = service.getBoundingClientRect()
-    targetX = (e.clientX - rect.left)// - halfWidth
-    targetY = (e.clientY - rect.top)// - halfHeight
+    targetX = e.clientX - rect.left
+    targetY = e.clientY - rect.top
   })
 
   service.addEventListener('mouseleave', () => {
     const IMG_POS = service.querySelector('.service-card__illustration')
-    const rect = currentServiceBG.getBoundingClientRect()
-    
-    targetX = IMG_POS.offsetLeft + rect.width
-    targetY = IMG_POS.offsetTop + rect.height
-
+    const bgRect = BG.getBoundingClientRect()
+    targetX = IMG_POS.offsetLeft + bgRect.width
+    targetY = IMG_POS.offsetTop + bgRect.height
   })
 })
 
