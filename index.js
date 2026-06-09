@@ -119,10 +119,8 @@ SERVICE_BOXES.forEach(service => {
   service.addEventListener('mouseenter', (e) => {
     console.log("mouse enter")
     const rect = service.getBoundingClientRect()
-    currentX = e.clientX - rect.left
-    currentY = e.clientY - rect.top
-    targetX = currentX
-    targetY = currentY
+    targetX = e.clientX - rect.left
+    targetY = e.clientY - rect.top
   })
 
   service.addEventListener('mousemove', (e) => {
@@ -136,8 +134,8 @@ SERVICE_BOXES.forEach(service => {
     console.log("mouse leave")
     const IMG_POS = service.querySelector('.service-card__illustration')
     const bgRect = BG.getBoundingClientRect()
-    targetX = IMG_POS.offsetLeft + bgRect.width
-    targetY = IMG_POS.offsetTop + bgRect.height
+    targetX = IMG_POS.offsetLeft
+    targetY = IMG_POS.offsetTop
   })
 })
 
