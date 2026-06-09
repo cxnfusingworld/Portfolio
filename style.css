@@ -377,7 +377,6 @@ body {
     left: 0;
     z-index: -1;
     filter: blur(30px);
-    transform: translate(-50%, -50%);transition: left 0.1s ease-out, top 0.1s ease-out;
 }
 
 /*

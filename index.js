@@ -94,31 +94,46 @@ NAV_LINKS.forEach(link => {
   })
 })
 
-// Handles the hover animation on services section
-SERVICE_BOXES.forEach(service => {
-  const moveBG = (x, y) => {
-    Object.assign(currentServiceBG.style, {
-      left: x + 'px',
-      top: y + 'px',
-    })
+let currentX = 0, currentY = 0
+let targetX = 0, targetY = 0
+let isHovering = false
+
+const lerp = (start, end, alpha) => start + (end - start) * alpha
+
+const updateLoop = () => {
+  if (currentServiceBG) {
+    currentX = lerp(currentX, targetX, 0.1)
+    currentY = lerp(currentY, targetY, 0.1)
+
+    currentServiceBG.style.left = `${currentX}px`
+    currentServiceBG.style.top = `${currentY}px`
   }
+  requestAnimationFrame(updateLoop) // Keep the loop running
+}
+updateLoop()
+
+SERVICE_BOXES.forEach(service => {
   service.addEventListener('mouseenter', (e) => {
     if (currentServiceBG === null) {
       currentServiceBG = service.querySelector('.service-card__bg')
+      const rect = service.getBoundingClientRect()
+      currentX = e.clientX - rect.left
+      currentY = e.clientY - rect.top
     }
-    moveBG(e.clientX, e.clientY)
   })
+
   service.addEventListener('mousemove', (e) => {
-    const LEFT = e.clientX - service.getBoundingClientRect().left
-    const TOP = e.clientY - service.getBoundingClientRect().top
-    moveBG(LEFT, TOP)
+    const rect = service.getBoundingClientRect()
+    targetX = e.clientX - rect.left
+    targetY = e.clientY - rect.top
   })
+
   service.addEventListener('mouseleave', () => {
     const IMG_POS = service.querySelector('.service-card__illustration')
-    const LEFT = IMG_POS.offsetLeft + currentServiceBG.getBoundingClientRect().width
-    const TOP = IMG_POS.offsetTop + currentServiceBG.getBoundingClientRect().height
+    
+    targetX = IMG_POS.offsetLeft + currentServiceBG.getBoundingClientRect().width
+    targetY = IMG_POS.offsetTop + currentServiceBG.getBoundingClientRect().height
 
-    moveBG(LEFT, TOP)
     currentServiceBG = null
   })
 })
