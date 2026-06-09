@@ -93,15 +93,11 @@ NAV_LINKS.forEach(link => {
   })
 })
 
-let currentX = 0, currentY = 0
-let targetX = 0, targetY = 0
-let isHovering = false
-
 const lerp = (start, end, alpha) => start + (end - start) * alpha
 
 SERVICE_BOXES.forEach(service => {
   const BG = service.querySelector('.service-card__bg')
-  if (!BG) return
+  if (!BG) console.log('nuh uh'); return
   
   let currentX = 0, currentY = 0
   let targetX = 0, targetY = 0
@@ -118,6 +114,7 @@ SERVICE_BOXES.forEach(service => {
   updateLoop()
 
   service.addEventListener('mouseenter', (e) => {
+    console.log("mouse enter")
     const rect = service.getBoundingClientRect()
     currentX = e.clientX - rect.left
     currentY = e.clientY - rect.top
@@ -126,12 +123,14 @@ SERVICE_BOXES.forEach(service => {
   })
 
   service.addEventListener('mousemove', (e) => {
+    console.log("mouse move")
     const rect = service.getBoundingClientRect()
     targetX = e.clientX - rect.left
     targetY = e.clientY - rect.top
   })
 
   service.addEventListener('mouseleave', () => {
+    console.log("mouse leave")
     const IMG_POS = service.querySelector('.service-card__illustration')
     const bgRect = BG.getBoundingClientRect()
     targetX = IMG_POS.offsetLeft + bgRect.width
