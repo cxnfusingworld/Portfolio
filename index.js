@@ -7,7 +7,6 @@ const SERVICE_BOXES = document.querySelectorAll('.service-card__box')
 const ACTIVE_LINK_CLASS = 'active'
 const BREAKPOINT = 576
 
-let currentServiceBG = null
 let currentActiveLink = document.querySelector('.nav__list-link.active')
 
 // Remove the active state once the breakpoint is reached
@@ -104,40 +103,41 @@ SERVICE_BOXES.forEach(service => {
 
   const halfWidth = bgRect.width / 2
   const halfHeight = bgRect.height / 2
+  const BG = service.querySelector('.service-card__bg')
   
   const updateLoop = () => {
-    if (currentServiceBG) {
+    if (BG) {
       currentX = lerp(currentX, targetX, 0.1)
       currentY = lerp(currentY, targetY, 0.1)
 
-      currentServiceBG.style.left = `${currentX}px`
-      currentServiceBG.style.top = `${currentY}px`
+      BG.style.left = `${currentX}px`
+      BG.style.top = `${currentY}px`
     }
     requestAnimationFrame(updateLoop)
   }
   updateLoop()
 
   service.addEventListener('mouseenter', (e) => {
-    if (currentServiceBG === null) {
-      currentServiceBG = service.querySelector('.service-card__bg')
-      const rect = service.getBoundingClientRect()
-      currentX = (e.clientX - rect.left) - halfWidth
-      currentY = (e.clientY - rect.top) - halfHeight
-    }
+    const rect = service.getBoundingClientRect()
+    const LEFT = e.clientX - rect.left
+    const TOP = e.clientY - rect.top
+    currentX = (e.clientX - rect.left)// - halfWidth
+    currentY = (e.clientY - rect.top)// - halfHeight
   })
 
   service.addEventListener('mousemove', (e) => {
     const rect = service.getBoundingClientRect()
-    targetX = (e.clientX - rect.left) - halfWidth
-    targetY = (e.clientY - rect.top) - halfHeight
+    targetX = (e.clientX - rect.left)// - halfWidth
+    targetY = (e.clientY - rect.top)// - halfHeight
   })
 
   service.addEventListener('mouseleave', () => {
     const IMG_POS = service.querySelector('.service-card__illustration')
+    const rect = currentServiceBG.getBoundingClientRect()
     
-    targetX = IMG_POS.offsetLeft
-    targetY = IMG_POS.offsetTop
-    
+    targetX = IMG_POS.offsetLeft + rect.width
+    targetY = IMG_POS.offsetTop + rect.height
+
   })
 })
 
