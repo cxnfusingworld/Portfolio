@@ -57,7 +57,6 @@ window.addEventListener('scroll', ()=>{
       const LINK = NAV_LINKS.filter(link => {
         return link.href.includes('#'+ID)
       })[0]
-      console.log(LINK)
       currentActiveLink.classList.remove(ACTIVE_LINK_CLASS)
       LINK.classList.add(ACTIVE_LINK_CLASS)
       currentActiveLink = LINK
