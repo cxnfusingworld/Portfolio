@@ -54,7 +54,7 @@ window.addEventListener('scroll', ()=>{
   sections.forEach((section) => {
     const sectionTop = section.offsetTop
     const NAV_BAR_HEIGHT = NAV_BAR.getBoundingClientRect().height
-    if (window.scrollY >= sectionTop - NAV_BAR_HEIGHT) {
+    if (window.scrollY+100 >= sectionTop - NAV_BAR_HEIGHT) {
       const ID = section.getAttribute('id')
       const LINK = NAV_LINKS.filter(link => {
         return link.href.includes('#'+ID)
@@ -98,9 +98,10 @@ SERVICE_BOXES.forEach(service => {
   console.log(service.nodeName)
   const BG = service.querySelector('.service-card__bg')
   if (!BG) return
-  
-  let currentX = 0, currentY = 0
-  let targetX = 0, targetY = 0
+
+  const originalX = 70, originalY = 75
+  let currentX = originalX, currentY = originalY
+  let targetX = currentX, targetY = currentY
 
   const updateLoop = () => {
     currentX = lerp(currentX, targetX, 0.1)
@@ -128,14 +129,22 @@ SERVICE_BOXES.forEach(service => {
   service.addEventListener('mouseleave', () => {
     const IMG_POS = service.querySelector('.service-card__illustration')
     const bgRect = BG.getBoundingClientRect()
-    targetX = IMG_POS.offsetLeft
-    targetY = IMG_POS.offsetTop
+    targetX = originalX
+    targetY = originalY
   })
 })
 
-// Handles smooth scrolling
-new SweetScroll({
-  trigger: '.nav__list-link',
-  easing: 'easeOutQuint',
-  offset: NAV_BAR.getBoundingClientRect().height - 80
-})
+const initializeScroll = (customTrigger, customDuration, customEasing) => {
+  
+  const config = {
+    trigger: customTrigger,
+    duration: customDuration || 700,
+    easing: customEasing || 'easeOutExpo',
+    offset: NAV_BAR.getBoundingClientRect().height - 150,
+  }
+
+  new SweetScroll(config)
+}
+
+initializeScroll('.header__scrollButton')
+initializeScroll('.nav__list-link')
